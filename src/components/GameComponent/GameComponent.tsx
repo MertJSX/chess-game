@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import GameMap from './GameMap/GameMap'
-import { Map } from './classes/Map';
+import GameMapComponent from './GameMapComponent/GameMapComponent'
+import { GameMap } from './classes/GameMap';
+import MapFrame from './classes/MapFrame';
 
 const GameComponent = () => {
-  const [map, setMap] = useState(new Map());
+  const [map, setMap] = useState<GameMap>(new GameMap());
+  const [selectedItem, setSelectedItem] = useState("");
   useEffect(() => {
     console.log(map);
-  },[])
+  },[map])
 
   return (
     <div>
-      <GameMap gameMap={map} />
+      <GameMapComponent gameMap={map} setGameMap={setMap} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
     </div>
   )
 }
