@@ -27,7 +27,24 @@ export class GameMap {
         this.initializePieces();
     }
 
-    initializePieces() {
+    public isAvailableMove(moveID: string) {
+        if (this.mapFrames.has(moveID)) {
+            if (this.mapFrames.get(moveID)?.isOccupied)
+                return false;
+            else 
+                return true;
+        }
+        return false;
+    }
+    public isAvailableToTake(moveID: string, color: string) {
+        if (this.mapFrames.has(moveID)) {
+            if ((this.mapFrames.get(moveID)?.isOccupied) && this.mapFrames.get(moveID)?.color !== color)
+                return true;
+        }
+        return false;
+    }
+
+    private initializePieces() {
         // Black
         this.mapFrames.get("a8")?.SetPiece(new Rook("black"));
         this.mapFrames.get("b8")?.SetPiece(new Knight("black"));
