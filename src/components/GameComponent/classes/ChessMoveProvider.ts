@@ -36,6 +36,16 @@ export class ChessMoveProvider {
 
                     return possibleMoves;
                 }
+                break;
+            case "Bishop":
+                if (selectedFrame) {
+                    possibleMoves = CalculateChessMoves.Bishop(gameMap, selectedFrame);
+
+                    setPossibleMoves()
+
+                    return possibleMoves;
+                }
+                break;
         }
     }
 }

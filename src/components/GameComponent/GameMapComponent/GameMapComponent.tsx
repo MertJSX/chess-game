@@ -44,8 +44,6 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setGameMap(gameMap);
                   }
                   else if (!item.isSelected && item.piece) {
-                    console.log("Worked second one!");
-                    
                     gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
                     markedItems.forEach((markedFrameID) => {
                       gameMap.mapFrames.get(markedFrameID)?.SetIsMarked(false);
@@ -58,8 +56,6 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
 
                     setGameMap(gameMap);
                   } else if (selectedItem !== null && item.isMarked === false) {
-                    console.log("worked!");
-
                     gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
                     markedItems.forEach((markedMapFrame) => {
                       gameMap.mapFrames.get(markedMapFrame)?.SetIsMarked(false);
