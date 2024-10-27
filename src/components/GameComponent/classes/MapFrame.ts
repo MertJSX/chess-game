@@ -18,7 +18,7 @@ class MapFrame {
         this.isMarked = false;
     }
 
-    public SetPiece(piece?: Piece) {
+    public SetPiece(piece?: Piece | null) {
         this.piece = piece || null;
         this.isOccupied = this.piece !== null;
     }

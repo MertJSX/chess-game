@@ -31,44 +31,40 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
             .map((item) => (
               <div
                 onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                  if (item.isMarked) {
+                    gameMap.changePosition(selectedItem, item.positionName);
+
+                    setGameMap(gameMap);
+                  }
                   if (!item.isSelected && item.piece) {
-                    if (selectedItem !== null) {
-                      gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
-                    }
+                    gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
+                    markedItems.forEach((markedMapFrame) => {
+                      gameMap.mapFrames.get(markedMapFrame)?.SetIsMarked(false);
+                    })
+
                     gameMap.mapFrames.get(item.positionName)?.SetSelected(true);
                     setSelectedItem(item.positionName);
 
                     ChessMoveProvider.Provide(gameMap, item, markedItems, setMarkedItems)
 
-                    // if (item.piece.name === "Pawn") {
-                    //   let selectedFrame = gameMap.mapFrames.get(item.positionName);
-                    //   if (selectedFrame) {
-                    //     let possibleMoves: Array<string> = CalculateChessMoves.Pawn(gameMap, selectedFrame);
+                    setGameMap(gameMap);
+                  } else if (selectedItem !== null && item.isMarked === false) {
+                    console.log("worked!");
 
-                    //     if (markedItems[0] !== undefined) {
-                    //       markedItems.forEach((markedItem) => {
-                    //         gameMap.mapFrames.get(markedItem)?.SetIsMarked(false);
-                    //       })
-                    //     }
+                    gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
+                    markedItems.forEach((markedMapFrame) => {
+                      gameMap.mapFrames.get(markedMapFrame)?.SetIsMarked(false);
+                    })
 
-                    //     if (possibleMoves) {
-                    //       possibleMoves.forEach((cordinate) => {
-                    //         gameMap.mapFrames.get(cordinate)?.SetIsMarked(true);
-                    //       })
-                    //     }
-
-                    //     console.log(possibleMoves);
-
-                    //     setMarkedItems(possibleMoves)
-                    //   }
-                    // }
+                    setSelectedItem("");
+                    setMarkedItems([]);
                     setGameMap(gameMap);
                   }
                 }}
                 className={`flex justify-center items-center text-xl w-20 h-20 ${item.isSelected ? "bg-sky-600" :
-                   item.color === "black" && item.isMarked ? "bg-chess-black-green" :
-                   item.color === "white" && item.isMarked ? "bg-chess-white-green" :
-                   item.color === "black" ? "bg-chess-black" : "bg-chess-white"
+                  item.color === "black" && item.isMarked ? "bg-chess-black-green" :
+                    item.color === "white" && item.isMarked ? "bg-chess-white-green" :
+                      item.color === "black" ? "bg-chess-black" : "bg-chess-white"
                   }`}
                 key={item.positionName}>
                 {item.piece ?

@@ -6,6 +6,7 @@ import { Queen } from "./pieces/Queen";
 import { Pawn } from "./pieces/Pawn";
 import { Bishop } from "./pieces/Bishop";
 import { numberToLetter } from "../utils/numberToLetter";
+import { Piece } from "../interfaces/Piece";
 export class GameMap {
     mapFrames: Map<string, MapFrame>;
     constructor(mapFrames?: Map<string, MapFrame>) {
@@ -27,21 +28,37 @@ export class GameMap {
         this.initializePieces();
     }
 
-    public isAvailableMove(moveID: string) {
-        if (this.mapFrames.has(moveID)) {
-            if (this.mapFrames.get(moveID)?.isOccupied)
+    public isAvailableMove(positionID: string) {
+        if (this.mapFrames.has(positionID)) {
+            if (this.mapFrames.get(positionID)?.isOccupied)
                 return false;
             else 
                 return true;
         }
         return false;
     }
-    public isAvailableToTake(moveID: string, color: string) {
-        if (this.mapFrames.has(moveID)) {
-            if ((this.mapFrames.get(moveID)?.isOccupied) && this.mapFrames.get(moveID)?.color !== color)
+    public isAvailableToTake(positionID: string, color: string) {
+        if (this.mapFrames.has(positionID)) {
+            if ((this.mapFrames.get(positionID)?.isOccupied) && (this.mapFrames.get(positionID)?.piece?.color !== color)) {
+                
                 return true;
+
+            }
         }
         return false;
+    }
+    public changePosition(oldMapFramePosition: string, newMapFramePosition: string) {
+        let oldMapFrameExists: boolean = this.mapFrames.has(oldMapFramePosition);
+        let newMapFrameExists: boolean = this.mapFrames.has(newMapFramePosition);
+        if (oldMapFrameExists && newMapFrameExists) {
+            let pieceToBeChanged: Piece | null = this.mapFrames.get(oldMapFramePosition)?.piece || null;
+            this.mapFrames
+            .get(newMapFramePosition)
+            ?.SetPiece(pieceToBeChanged)
+            this.mapFrames
+            .get(oldMapFramePosition)
+            ?.SetPiece(null);
+        }
     }
 
     private initializePieces() {

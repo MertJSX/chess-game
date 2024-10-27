@@ -21,6 +21,12 @@ export function KnightMoves(gameMap: GameMap, mapFrame: MapFrame) {
         if (gameMap.isAvailableMove(pos)) {
             availableMoves.push(pos)
         }
+        let mapFramePiece = mapFrame.piece;
+        if (mapFramePiece) {
+            if (gameMap.isAvailableToTake(pos, mapFramePiece.color)) {
+                availableMoves.push(pos)
+            }
+        }
     })
 
     // if (mapFrame.piece?.color === "white") {
