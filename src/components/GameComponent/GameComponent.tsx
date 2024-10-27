@@ -5,7 +5,7 @@ import MapFrame from './classes/MapFrame';
 
 const GameComponent = () => {
   const [map, setMap] = useState<GameMap>(new GameMap());
-  const [selectedItem, setSelectedItem] = useState("");
+  const [selectedItem, setSelectedItem] = useState<string>("");
   const [markedItems, setMarkedItems] = useState<string[]>([]);
   useEffect(() => {
     console.log(map);
