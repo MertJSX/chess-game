@@ -2,7 +2,7 @@ import { GameMap } from "../classes/GameMap";
 import MapFrame from "../classes/MapFrame";
 import { numberToLetter as NTL } from "../utils/numberToLetter";
 
-export function KnightMoves(gameMap: GameMap, mapFrame: MapFrame) {
+export function KnightMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black") {
     let availableMoves: Array<string> = [];
     let currCol = mapFrame.position.col;
     let currRow = mapFrame.position.row;
@@ -19,11 +19,13 @@ export function KnightMoves(gameMap: GameMap, mapFrame: MapFrame) {
 
     positionsForCheck.forEach((pos) => {
         if (gameMap.isAvailableMove(pos)) {
-            availableMoves.push(pos)
+            if (!onlyIsAvailableToTake) {
+                availableMoves.push(pos);
+            }
         }
         let mapFramePiece = mapFrame.piece;
         if (mapFramePiece) {
-            if (gameMap.isAvailableToTake(pos, mapFramePiece.color)) {
+            if (gameMap.isAvailableToTake(pos, allyColor ?? mapFramePiece.color)) {
                 availableMoves.push(pos)
             }
         }
