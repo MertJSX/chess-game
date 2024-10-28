@@ -4,6 +4,7 @@ export class Rook implements Piece {
     name: PieceName;
     color: string;
     image: string;
+    isMoved: boolean = true;
     constructor(color: string ) {
         this.name = "Rook";
         this.color = color;

@@ -3,4 +3,5 @@ export interface Piece {
     name: PieceName;
     color: string;
     image: string;
+    isMoved: boolean;
 }

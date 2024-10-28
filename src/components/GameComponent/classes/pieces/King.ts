@@ -4,6 +4,7 @@ export class King implements Piece {
     name: PieceName;
     color: string;
     image: string;
+    isMoved: boolean = true;
     constructor(color: string ) {
         this.name = "King";
         this.color = color;
