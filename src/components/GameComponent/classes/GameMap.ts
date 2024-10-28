@@ -7,6 +7,10 @@ import { Pawn } from "./pieces/Pawn";
 import { Bishop } from "./pieces/Bishop";
 import { numberToLetter } from "../utils/numberToLetter";
 import { Piece } from "../interfaces/Piece";
+import { BishopMoves } from "../pieceMoves/BishopMoves";
+import { RookMoves } from "../pieceMoves/RookMoves";
+import { KnightMoves } from "../pieceMoves/KnightMoves";
+
 export class GameMap {
     mapFrames: Map<string, MapFrame>;
     constructor(mapFrames?: Map<string, MapFrame>) {
@@ -22,7 +26,6 @@ export class GameMap {
                 const positionName = String.fromCharCode(96 + col) + row;
                 const color = (row + col) % 2 === 0 ? colors[0] : colors[1];
                 this.mapFrames.set(`${numberToLetter(col)}${row}`, new MapFrame({row, col}, positionName, color))
-                // this.map.push(new MapFrame({ row, col }, positionName, color));
             }
         }
         this.initializePieces();
@@ -61,9 +64,46 @@ export class GameMap {
         }
     }
 
-    // public isThreateningPosition(positionID: string, enemyColor: "black" | "white") {
-    //     let MapFrameOfPosition = this.mapFrames.get(positionID);
-    // }
+    public isThreatenedPosition(positionID: string, allyColor: "black" | "white") {
+        let MapFrameOfPosition = this.mapFrames.get(positionID);
+        let threateningPositions: string[] = [];
+        if (MapFrameOfPosition) {
+            let possibleBishops: string[] = BishopMoves(this, MapFrameOfPosition, true, allyColor);
+            let possibleRooks: string[] = RookMoves(this, MapFrameOfPosition, true, allyColor);
+            let possibleKnights: string[] = KnightMoves(this, MapFrameOfPosition, true, allyColor);
+
+            possibleBishops.forEach((possibleBishopPosition) => {
+                let possibleBishopMapFrame = this.mapFrames.get(possibleBishopPosition);
+                if (possibleBishopMapFrame) {
+                    if (possibleBishopMapFrame.piece?.name === "Bishop" || possibleBishopMapFrame.piece?.name === "Queen") {
+                        threateningPositions.push(possibleBishopPosition)
+                    }
+                }
+            })
+            possibleRooks.forEach((possibleRookPosition) => {
+                let possibleBishopMapFrame = this.mapFrames.get(possibleRookPosition);
+                if (possibleBishopMapFrame) {
+                    if (possibleBishopMapFrame.piece?.name === "Rook" || possibleBishopMapFrame.piece?.name === "Queen") {
+                        threateningPositions.push(possibleRookPosition)
+                    }
+                }
+            })
+            possibleKnights.forEach((possibleKnightPosition) => {
+                let possibleBishopMapFrame = this.mapFrames.get(possibleKnightPosition);
+                if (possibleBishopMapFrame) {
+                    if (possibleBishopMapFrame.piece?.name === "Knight") {
+                        threateningPositions.push(possibleKnightPosition)
+                    }
+                }
+            })
+        }
+
+        if (threateningPositions[0]) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
     private initializePieces() {
         // Black
