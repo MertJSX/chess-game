@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState} from 'react'
 import GameMapComponent from './GameMapComponent/GameMapComponent'
 import { GameMap } from './classes/GameMap';
 import MapFrame from './classes/MapFrame';
@@ -7,9 +7,6 @@ const GameComponent = () => {
   const [map, setMap] = useState<GameMap>(new GameMap());
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [markedItems, setMarkedItems] = useState<string[]>([]);
-  useEffect(() => {
-    console.log(map);
-  },[map])
 
   return (
     <div>
