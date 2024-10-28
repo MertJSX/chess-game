@@ -19,7 +19,9 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame) {
             availableMoves.push(move);
             if (mapFrame.position.row === 2) {
                 move = `${NTL(mapFrame.position.col)}${mapFrame.position.row + 2}`;
-                availableMoves.push(move);
+                if (gameMap.isAvailableMove(move)) {
+                    availableMoves.push(move);
+                }
             }
         }
         whiteTakePossitionsForCheck.forEach((pos) => {
@@ -38,7 +40,9 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame) {
             availableMoves.push(move);
             if (mapFrame.position.row === 7) {
                 move = `${NTL(mapFrame.position.col)}${mapFrame.position.row - 2}`;
-                availableMoves.push(move);
+                if (gameMap.isAvailableMove(move)) {
+                    availableMoves.push(move);
+                }
             }
         }
         blackTakePossitionsForCheck.forEach((pos) => {

@@ -2,7 +2,7 @@ import { GameMap } from "../classes/GameMap";
 import MapFrame from "../classes/MapFrame";
 import { numberToLetter as NTL } from "../utils/numberToLetter";
 
-export function BishopMoves(gameMap: GameMap, mapFrame: MapFrame) {
+export function RookMoves(gameMap: GameMap, mapFrame: MapFrame) {
     let availableMoves: Array<string> = [];
     
     function checkPositions(colModifier: number, rowModifier: number) {
@@ -33,10 +33,10 @@ export function BishopMoves(gameMap: GameMap, mapFrame: MapFrame) {
         }
     }
 
-    checkPositions(1, 1);
-    checkPositions(-1, 1);
-    checkPositions(1, -1);
-    checkPositions(-1, -1);
+    checkPositions(0, 1);
+    checkPositions(0, -1);
+    checkPositions(-1, 0);
+    checkPositions(1, 0);
 
 
 

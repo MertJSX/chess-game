@@ -46,6 +46,33 @@ export class ChessMoveProvider {
                     return possibleMoves;
                 }
                 break;
+            case "Rook":
+                if (selectedFrame) {
+                    possibleMoves = CalculateChessMoves.Rook(gameMap, selectedFrame);
+
+                    setPossibleMoves()
+
+                    return possibleMoves;
+                }
+                break;
+            case "Queen":
+                if (selectedFrame) {
+                    possibleMoves = CalculateChessMoves.Queen(gameMap, selectedFrame);
+
+                    setPossibleMoves()
+
+                    return possibleMoves;
+                }
+                break;
+            case "King":
+                if (selectedFrame) {
+                    possibleMoves = CalculateChessMoves.King(gameMap, selectedFrame);
+
+                    setPossibleMoves()
+
+                    return possibleMoves;
+                }
+                break;
         }
     }
 }

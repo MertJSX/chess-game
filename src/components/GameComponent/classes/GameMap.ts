@@ -61,6 +61,10 @@ export class GameMap {
         }
     }
 
+    // public isThreateningPosition(positionID: string, enemyColor: "black" | "white") {
+    //     let MapFrameOfPosition = this.mapFrames.get(positionID);
+    // }
+
     private initializePieces() {
         // Black
         this.mapFrames.get("a8")?.SetPiece(new Rook("black"));
