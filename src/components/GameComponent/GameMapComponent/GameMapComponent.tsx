@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { GameMap } from '../classes/GameMap';
 import MapFrame from '../classes/MapFrame';
 import { CalculateChessMoves } from '../classes/CalculateChessMoves';
@@ -16,10 +16,7 @@ interface GameMapProps {
 const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selectedItem, setSelectedItem, markedItems, setMarkedItems }) => {
   const arrayFromGameMap = Array.from(gameMap.mapFrames.values());
   const mapElements = useRef(null)
-  useEffect(() => {
-    console.log(gameMap.mapFrames.get(selectedItem));
 
-  }, [selectedItem])
   return (
     <div>
       <h1>Game Map</h1>
@@ -64,6 +61,11 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setSelectedItem("");
                     setMarkedItems([]);
                     setGameMap(gameMap);
+                  }
+
+                  if (gameMap.isThreatenedPosition("e1", "white")) {
+                    console.log("DO SOMETHING WHITE KING IS UNDER ATTACK!");
+                    
                   }
                 }}
                 className={`flex justify-center items-center text-xl w-20 h-20 ${item.isSelected ? "bg-sky-600" :
