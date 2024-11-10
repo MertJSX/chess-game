@@ -2,7 +2,7 @@ import { GameMap } from "../classes/GameMap";
 import MapFrame from "../classes/MapFrame";
 import { numberToLetter as NTL } from "../utils/numberToLetter";
 
-export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame) {
+export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black") {
     let availableMoves: Array<string> = [];
     let whiteTakePossitionsForCheck = [
         `${NTL(mapFrame.position.col + 1)}${mapFrame.position.row + 1}`,
@@ -15,7 +15,7 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame) {
 
     if (mapFrame.piece?.color === "white") {
         let move: string = `${NTL(mapFrame.position.col)}${mapFrame.position.row + 1}`;
-        if (gameMap.isAvailableMove(move)) {
+        if (gameMap.isAvailableMove(move) && !onlyIsAvailableToTake) {
             availableMoves.push(move);
             if (mapFrame.position.row === 2) {
                 move = `${NTL(mapFrame.position.col)}${mapFrame.position.row + 2}`;
@@ -26,7 +26,11 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame) {
         }
         whiteTakePossitionsForCheck.forEach((pos) => {
             let mapFramePiece = mapFrame.piece;
-            if (mapFramePiece) {
+            if (mapFramePiece && onlyIsAvailableToTake) {
+                if (gameMap.isAvailableToTake(pos, allyColor || "white")) {
+                    availableMoves.push(pos);
+                }
+            } else if (mapFramePiece) {
                 if (gameMap.isAvailableToTake(pos, mapFramePiece.color)) {
                     availableMoves.push(pos);
                 }
@@ -36,7 +40,7 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame) {
     if (mapFrame.piece?.color === "black") {
         let move: string = `${NTL(mapFrame.position.col)}${mapFrame.position.row - 1}`;
 
-        if (gameMap.isAvailableMove(move)) {
+        if (gameMap.isAvailableMove(move) && !onlyIsAvailableToTake) {
             availableMoves.push(move);
             if (mapFrame.position.row === 7) {
                 move = `${NTL(mapFrame.position.col)}${mapFrame.position.row - 2}`;
@@ -47,7 +51,11 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame) {
         }
         blackTakePossitionsForCheck.forEach((pos) => {
             let mapFramePiece = mapFrame.piece;
-            if (mapFramePiece) {
+            if (mapFramePiece && onlyIsAvailableToTake) {
+                if (gameMap.isAvailableToTake(pos, allyColor || "black")) {
+                    availableMoves.push(pos);
+                }
+            } else if (mapFramePiece) {
                 if (gameMap.isAvailableToTake(pos, mapFramePiece.color)) {
                     availableMoves.push(pos);
                 }

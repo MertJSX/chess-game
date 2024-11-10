@@ -67,6 +67,9 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     console.log("DO SOMETHING WHITE KING IS UNDER ATTACK!");
                     
                   }
+                  if (gameMap.isThreatenedPosition("e8", "black")) {
+                    console.log("DO SOMETHING BLACK KING IS UNDER ATTACK!");
+                  }
                 }}
                 className={`flex justify-center items-center text-xl w-20 h-20 ${item.isSelected ? "bg-sky-600" :
                   item.color === "black" && item.isMarked ? "bg-chess-black-green" :

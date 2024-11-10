@@ -10,6 +10,7 @@ import { Piece } from "../interfaces/Piece";
 import { BishopMoves } from "../pieceMoves/BishopMoves";
 import { RookMoves } from "../pieceMoves/RookMoves";
 import { KnightMoves } from "../pieceMoves/KnightMoves";
+import { PawnMoves } from "../pieceMoves/PawnMoves";
 
 export class GameMap {
     mapFrames: Map<string, MapFrame>;
@@ -71,7 +72,16 @@ export class GameMap {
             let possibleBishops: string[] = BishopMoves(this, MapFrameOfPosition, true, allyColor);
             let possibleRooks: string[] = RookMoves(this, MapFrameOfPosition, true, allyColor);
             let possibleKnights: string[] = KnightMoves(this, MapFrameOfPosition, true, allyColor);
+            let possiblePawns: string[] = PawnMoves(this, MapFrameOfPosition, true, allyColor);
 
+            possiblePawns.forEach((possiblePawnPosition) => {
+                let possiblePawnMapFrame = this.mapFrames.get(possiblePawnPosition);
+                if (possiblePawnMapFrame) {
+                    if (possiblePawnMapFrame.piece?.name === "Pawn" || possiblePawnMapFrame.piece?.name === "Queen") {
+                        threateningPositions.push(possiblePawnPosition)
+                    }
+                }
+            })
             possibleBishops.forEach((possibleBishopPosition) => {
                 let possibleBishopMapFrame = this.mapFrames.get(possibleBishopPosition);
                 if (possibleBishopMapFrame) {
