@@ -4,7 +4,7 @@ export class Bishop implements Piece {
     name: PieceName;
     color: string;
     image: string;
-    isMoved: boolean = true;
+    public isMoved: boolean = true;
     constructor(color: string ) {
         this.name = "Bishop";
         this.color = color;

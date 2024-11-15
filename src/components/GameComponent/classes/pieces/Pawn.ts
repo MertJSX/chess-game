@@ -4,7 +4,7 @@ export class Pawn implements Piece {
     name: PieceName;
     color: string;
     image: string;
-    isMoved: boolean = true;
+    public isMoved: boolean = true;
     constructor(color: string ) {
         this.name = "Pawn";
         this.color = color;
