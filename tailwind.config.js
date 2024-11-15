@@ -7,9 +7,12 @@ module.exports = {
     extend: {
       colors: {
         'chess-black': '#44403c',
-        'chess-black-green': '#0b5b3c',
+        'chess-black-blue': '#0b5b5c',
+        'chess-black-blue-2': '#3d7f80',
         'chess-white': '#6b7280',
-        'chess-white-green': '#6b806e'
+        'chess-white-blue': '#5c6b80',
+        'chess-white-blue-2': '#7c8da0',
+        'chess-point-color': '#3b6e55'
       }
     },
   },
