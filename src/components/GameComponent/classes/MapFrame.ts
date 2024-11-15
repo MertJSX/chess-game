@@ -7,6 +7,7 @@ class MapFrame {
     public isOccupied: boolean;
     public isSelected: boolean;
     public isMarked: boolean;
+    public isMarkedForCastle: boolean = false;
 
     constructor(position: {row: number, col: number}, positionName: string, color: string, piece?: Piece ) {
         this.position = position;
@@ -18,13 +19,20 @@ class MapFrame {
         this.isMarked = false;
     }
 
-    public SetPiece(piece?: Piece | null) {
+    public SetPiece(piece?: Piece | null, doNotTouchIsMoved: boolean = false) {
         this.piece = piece || null;
+        if (this.piece?.isMoved !== undefined && !doNotTouchIsMoved) {
+            this.piece.isMoved = true;
+        }
         this.isOccupied = this.piece !== null;
     }
 
     public SetIsMarked(isMarked: boolean) {
         this.isMarked = isMarked;
+    }
+
+    public SetIsMarkedForCastle(isMarked: boolean) {
+        this.isMarkedForCastle = isMarked;
     }
 
     public SetSelected(isSelected: boolean) {

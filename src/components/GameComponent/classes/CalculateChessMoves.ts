@@ -6,6 +6,7 @@ import { BishopMoves } from "../pieceMoves/BishopMoves";
 import { RookMoves } from "../pieceMoves/RookMoves";
 import { QueenMoves } from "../pieceMoves/QueenMoves";
 import { KingMoves } from "../pieceMoves/KingMoves";
+import { KingCastles } from "../pieceMoves/KingCastles";
 export class CalculateChessMoves {
     public static Pawn(gameMap: GameMap, mapFrame: MapFrame) {
         return PawnMoves(gameMap, mapFrame);
@@ -24,5 +25,8 @@ export class CalculateChessMoves {
     }
     public static King(gameMap: GameMap, mapFrame: MapFrame) {
         return KingMoves(gameMap, mapFrame);
+    }
+    public static KingCastles(gameMap: GameMap, mapFrame: MapFrame) {
+        return KingCastles(gameMap, mapFrame);
     }
 }
