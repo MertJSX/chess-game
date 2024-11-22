@@ -13,7 +13,7 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableT
         `${NTL(mapFrame.position.col - 1)}${mapFrame.position.row - 1}`
     ];
 
-    if (mapFrame.piece?.color === "white") {
+    if ((mapFrame.piece?.color === "white") || allyColor === "white") {
         let move: string = `${NTL(mapFrame.position.col)}${mapFrame.position.row + 1}`;
         if (gameMap.isAvailableMove(move) && !onlyIsAvailableToTake) {
             availableMoves.push(move);
@@ -26,8 +26,8 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableT
         }
         whiteTakePossitionsForCheck.forEach((pos) => {
             let mapFramePiece = mapFrame.piece;
-            if (mapFramePiece && onlyIsAvailableToTake) {
-                if (gameMap.isAvailableToTake(pos, allyColor || "white")) {
+            if (onlyIsAvailableToTake) {
+                if (gameMap.isAvailableToTake(pos, allyColor || "white", true)) {
                     availableMoves.push(pos);
                 }
             } else if (mapFramePiece) {
@@ -37,7 +37,7 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableT
             }
         })
     }
-    if (mapFrame.piece?.color === "black") {
+    if ((mapFrame.piece?.color === "black") || allyColor === "black") {
         let move: string = `${NTL(mapFrame.position.col)}${mapFrame.position.row - 1}`;
 
         if (gameMap.isAvailableMove(move) && !onlyIsAvailableToTake) {
@@ -51,8 +51,8 @@ export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableT
         }
         blackTakePossitionsForCheck.forEach((pos) => {
             let mapFramePiece = mapFrame.piece;
-            if (mapFramePiece && onlyIsAvailableToTake) {
-                if (gameMap.isAvailableToTake(pos, allyColor || "black")) {
+            if (onlyIsAvailableToTake) {
+                if (gameMap.isAvailableToTake(pos, allyColor || "black", true)) {
                     availableMoves.push(pos);
                 }
             } else if (mapFramePiece) {

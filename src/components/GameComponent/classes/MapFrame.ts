@@ -8,6 +8,7 @@ class MapFrame {
     public isSelected: boolean;
     public isMarked: boolean;
     public isMarkedForCastle: boolean = false;
+    public isThreatened: boolean = false;
 
     constructor(position: {row: number, col: number}, positionName: string, color: string, piece?: Piece ) {
         this.position = position;
@@ -33,6 +34,10 @@ class MapFrame {
 
     public SetIsMarkedForCastle(isMarked: boolean) {
         this.isMarkedForCastle = isMarked;
+    }
+
+    public SetIsThreatened(isThreatened: boolean) {
+        this.isThreatened = isThreatened;
     }
 
     public SetSelected(isSelected: boolean) {

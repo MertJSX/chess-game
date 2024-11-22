@@ -2,7 +2,7 @@ import { GameMap } from "../classes/GameMap";
 import MapFrame from "../classes/MapFrame";
 import { numberToLetter as NTL } from "../utils/numberToLetter";
 
-export function RookMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black") {
+export function RookMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black", skipPosition?: string) {
     let availableMoves: Array<string> = [];
     
     function checkPositions(colModifier: number, rowModifier: number) {
@@ -23,6 +23,11 @@ export function RookMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableT
                 }
             }
             else if (pieceColor) {
+                if (skipPosition) {
+                    if (skipPosition === currWorkPos) {
+                        continue;
+                    }
+                }
                 if (gameMap.isAvailableToTake(currWorkPos, pieceColor)) {
                     availableMoves.push(currWorkPos);
                     isUnavailable = true;

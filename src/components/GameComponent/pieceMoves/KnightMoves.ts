@@ -23,20 +23,13 @@ export function KnightMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailabl
                 availableMoves.push(pos);
             }
         }
-        let mapFramePiece = mapFrame.piece;
-        if (mapFramePiece) {
-            if (gameMap.isAvailableToTake(pos, allyColor ?? mapFramePiece.color)) {
+        let mapFramePieceColor = allyColor ?? mapFrame.piece?.color;
+        if (mapFramePieceColor) {
+            if (gameMap.isAvailableToTake(pos, mapFramePieceColor, allyColor ? true : false)) {
                 availableMoves.push(pos)
             }
         }
     })
-
-    // if (mapFrame.piece?.color === "white") {
-        
-    // }
-    // if (mapFrame.piece?.color === "black") {
-        
-    // }
 
     return availableMoves;
 }

@@ -2,7 +2,7 @@ import { GameMap } from "../classes/GameMap";
 import MapFrame from "../classes/MapFrame";
 import { numberToLetter as NTL } from "../utils/numberToLetter";
 
-export function BishopMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black") {
+export function BishopMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black", skipPosition?: string) {
     let availableMoves: Array<string> = [];
 
     function checkPositions(colModifier: number, rowModifier: number) {
@@ -24,6 +24,11 @@ export function BishopMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailabl
                 }
             }
             else if (pieceColor) {
+                if (skipPosition) {
+                    if (skipPosition === currWorkPos) {
+                        continue;
+                    }
+                }
                 if (gameMap.isAvailableToTake(currWorkPos, pieceColor)) {
                     availableMoves.push(currWorkPos);
                     isUnavailable = true;

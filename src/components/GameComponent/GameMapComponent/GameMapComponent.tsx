@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { GameMap } from '../classes/GameMap';
 import { TbPointFilled } from "react-icons/tb";
 import { ChessMoveProvider } from '../classes/ChessMoveProvider';
 import { colPlaceForCoordinate, rowPlaceForCoordinate } from '../utils/placeForCoordinate';
+import MapFrame from '../classes/MapFrame';
 
 interface GameMapProps {
   gameMap: GameMap,
@@ -16,9 +17,18 @@ interface GameMapProps {
 }
 
 const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selectedItem, setSelectedItem, markedItems, setMarkedItems, markedPossibleCastles, setMarkedPossibleCastles }) => {
-  const arrayFromGameMap = Array.from(gameMap.mapFrames.values());
+  const [arrayFromGameMap, setArrayFromGameMap] = useState<Array<MapFrame>>(Array.from(gameMap.mapFrames.values()));
   const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
+  const [flipBoard, setFlipBoard] = React.useState<boolean>(false);
   const mapElements = useRef(null)
+
+  useEffect(() => {
+    if (flipBoard) {
+      setArrayFromGameMap(Array.from(gameMap.mapFrames.values()).reverse());
+    } else {
+      setArrayFromGameMap(Array.from(gameMap.mapFrames.values()))
+    }
+  }, [flipBoard, gameMap.mapFrames])
 
   return (
     <div>
@@ -31,10 +41,14 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
             .map((item) => (
               <div
                 onMouseEnter={() => {
-                  setHoveredItem(item.positionName);
+                  if (selectedItem !== "") {
+                    setHoveredItem(item.positionName);
+                  }
                 }}
                 onMouseLeave={() => {
-                  setHoveredItem(null);
+                  if (selectedItem !== "") {
+                    setHoveredItem(null);
+                  }
                 }}
                 onClick={(e: React.MouseEvent<HTMLDivElement>) => {
                   if (item.isMarked) {
@@ -47,6 +61,7 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     markedPossibleCastles.forEach((markedFrameID) => {
                       gameMap.mapFrames.get(markedFrameID)?.SetIsMarkedForCastle(false);
                     })
+                    gameMap.areKingsInCheck();
 
                     setSelectedItem("");
                     setMarkedItems([]);
@@ -104,33 +119,26 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setMarkedPossibleCastles([]);
                     setGameMap(gameMap);
                   }
-
-                  if (gameMap.isThreatenedPosition("e1", "white")) {
-                    console.log("DO SOMETHING WHITE KING IS UNDER ATTACK!");
-                    
-                  }
-                  if (gameMap.isThreatenedPosition("e8", "black")) {
-                    console.log("DO SOMETHING BLACK KING IS UNDER ATTACK!");
-                  }
                 }}
                 className={`relative flex justify-center items-center text-xl w-20 h-20 ${item.isSelected ? "bg-sky-600" :
-                  item.color === "black" && (item.isMarked || item.isMarkedForCastle) ? `${item.piece ? "bg-chess-black-blue-2" : "hover:bg-chess-black-blue"} bg-chess-black` :
-                    item.color === "white" && (item.isMarked || item.isMarkedForCastle) ? `${item.piece ? "bg-chess-white-blue-2" : "hover:bg-chess-white-blue"} bg-chess-white` :
+                  item.isThreatened ? `bg-red-600` :
+                  item.color === "black" && (item.isMarked || item.isMarkedForCastle) ? `${item.piece ? "bg-chess-black-blue-2 hover:bg-sky-500" : "hover:bg-chess-black-blue"} bg-chess-black` :
+                    item.color === "white" && (item.isMarked || item.isMarkedForCastle) ? `${item.piece ? "bg-chess-white-blue-2 hover:bg-sky-500" : "hover:bg-chess-white-blue"} bg-chess-white` :
                       item.color === "black" ? "bg-chess-black" : "bg-chess-white"
                   }`}
                 key={item.positionName}>
                 {
-                  colPlaceForCoordinate(item) ?
+                  colPlaceForCoordinate(item, flipBoard) ?
                   <h1
-                  className={`absolute m-1 text-sm font-semibold bottom-0 left-0 w-10 ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
-                    {colPlaceForCoordinate(item).toString()}
+                  className={`absolute m-1 text-sm font-semibold select-none bottom-0 left-0 w-10 ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
+                    {colPlaceForCoordinate(item, flipBoard)}
                   </h1> : null
                 }
                 {
-                  rowPlaceForCoordinate(item) ?
+                  rowPlaceForCoordinate(item, flipBoard) ?
                   <h1
-                  className={`absolute m-1 text-sm font-semibold top-0 right-0 w-10 text-right ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
-                    {rowPlaceForCoordinate(item).toString()}
+                  className={`absolute m-1 text-sm font-semibold select-none top-0 right-0 w-10 text-right ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
+                    {rowPlaceForCoordinate(item, flipBoard)}
                   </h1> : null
                 }
                 {item.piece ?
@@ -143,6 +151,13 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
             ))
         }
       </div>
+      <button
+      onClick={() => {
+        setFlipBoard(!flipBoard);
+      }} 
+      className="bg-teal-600 px-5 rounded-2xl mt-2 font-bold text-white text-lg text-center block m-auto">
+        Flip Board
+      </button>
 
     </div>
   )
