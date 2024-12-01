@@ -4,6 +4,7 @@ import { TbPointFilled } from "react-icons/tb";
 import { ChessMoveProvider } from '../classes/ChessMoveProvider';
 import { colPlaceForCoordinate, rowPlaceForCoordinate } from '../utils/placeForCoordinate';
 import MapFrame from '../classes/MapFrame';
+import { ChessGame } from '../classes/ChessGame';
 
 interface GameMapProps {
   gameMap: GameMap,
@@ -13,10 +14,12 @@ interface GameMapProps {
   markedItems: string[],
   setMarkedItems: React.Dispatch<string[]>,
   markedPossibleCastles: string[],
-  setMarkedPossibleCastles: React.Dispatch<string[]>
+  setMarkedPossibleCastles: React.Dispatch<string[]>,
+  chessGame: ChessGame,
+  setChessGame: React.Dispatch<ChessGame>
 }
 
-const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selectedItem, setSelectedItem, markedItems, setMarkedItems, markedPossibleCastles, setMarkedPossibleCastles }) => {
+const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selectedItem, setSelectedItem, markedItems, setMarkedItems, markedPossibleCastles, setMarkedPossibleCastles, chessGame, setChessGame }) => {
   const [arrayFromGameMap, setArrayFromGameMap] = useState<Array<MapFrame>>(Array.from(gameMap.mapFrames.values()));
   const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
   const [flipBoard, setFlipBoard] = React.useState<boolean>(false);
@@ -66,6 +69,8 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setSelectedItem("");
                     setMarkedItems([]);
                     setMarkedPossibleCastles([]);
+                    chessGame.changeTurn();
+                    setFlipBoard(!flipBoard);
                     setGameMap(gameMap);
                   }
                   else if (item.isMarkedForCastle) {
@@ -88,9 +93,17 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setSelectedItem("");
                     setMarkedItems([]);
                     setMarkedPossibleCastles([]);
+                    chessGame.changeTurn();
+                    setFlipBoard(!flipBoard);
                     setGameMap(gameMap);
                   }
                   else if (!item.isSelected && item.piece) {
+                    if (chessGame.turn === "black" && item.piece.color !== "black") {
+                      return
+                    }
+                    if (chessGame.turn === "white" && item.piece.color !== "white") {
+                      return
+                    }
                     gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
                     markedItems.forEach((markedFrameID) => {
                       gameMap.mapFrames.get(markedFrameID)?.SetIsMarked(false);
