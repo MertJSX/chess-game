@@ -2,22 +2,26 @@ import React, { useEffect, useState } from "react";
 import GameMapComponent from "./GameMapComponent/GameMapComponent";
 import { GameMap } from "./classes/GameMap";
 import { ChessGame } from "./classes/ChessGame";
+import { useLocation } from "react-router-dom";
 
 const GameComponent = () => {
   const [map, setMap] = useState<GameMap>(new GameMap());
   const [selectedItem, setSelectedItem] = useState<string>("");
   const [markedItems, setMarkedItems] = useState<string[]>([]);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const gamemode = queryParams.get("gamemode") as "sandbox" | "1v1" | null;
   const [markedPossibleCastles, setMarkedPossibleCastles] = useState<string[]>(
     []
   );
-  const [sandboxGame, setSandboxGame] = useState<ChessGame>(
-    new ChessGame(map, "sandbox")
+  const [ChessGameObj, setChessGameObj] = useState<ChessGame>(
+    new ChessGame(map, gamemode ?? "1v1")
   );
 
   useEffect(() => {
-    let sandboxGameUpdate: ChessGame = sandboxGame;
+    let sandboxGameUpdate: ChessGame = ChessGameObj;
     sandboxGameUpdate.setGameMap(map);
-    setSandboxGame(sandboxGameUpdate);
+    setChessGameObj(sandboxGameUpdate);
   }, [map]);
 
   return (
@@ -31,8 +35,8 @@ const GameComponent = () => {
         setMarkedItems={setMarkedItems}
         markedPossibleCastles={markedPossibleCastles}
         setMarkedPossibleCastles={setMarkedPossibleCastles}
-        chessGame={sandboxGame}
-        setChessGame={setSandboxGame}
+        chessGame={ChessGameObj}
+        setChessGame={setChessGameObj}
       />
     </div>
   );

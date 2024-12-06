@@ -23,7 +23,17 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
   const [arrayFromGameMap, setArrayFromGameMap] = useState<Array<MapFrame>>(Array.from(gameMap.mapFrames.values()));
   const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
   const [flipBoard, setFlipBoard] = React.useState<boolean>(false);
+  const [autoFlipBoard, setAutoFlipBoard] = React.useState<boolean>(false);
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
   const mapElements = useRef(null)
+
+  useEffect(() => {
+    console.log(windowDimensions);
+    
+  },[])
 
   useEffect(() => {
     if (flipBoard) {
@@ -35,10 +45,9 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
 
   return (
     <div>
-      <h1>Game Map</h1>
       <div
         ref={mapElements}
-        className="flex flex-wrap w-[644px] m-auto border-2 border-black">
+        className={`flex flex-wrap w-[324px] md:w-[644px] m-auto border-2 border-black mt-2`}>
         {
           arrayFromGameMap
             .map((item) => (
@@ -70,7 +79,9 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setMarkedItems([]);
                     setMarkedPossibleCastles([]);
                     chessGame.changeTurn();
-                    setFlipBoard(!flipBoard);
+                    if (autoFlipBoard) {
+                      setFlipBoard(!flipBoard);
+                    }
                     setGameMap(gameMap);
                   }
                   else if (item.isMarkedForCastle) {
@@ -94,15 +105,21 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setMarkedItems([]);
                     setMarkedPossibleCastles([]);
                     chessGame.changeTurn();
-                    setFlipBoard(!flipBoard);
+                    if (autoFlipBoard) {
+                      setFlipBoard(!flipBoard);
+                    }
                     setGameMap(gameMap);
                   }
                   else if (!item.isSelected && item.piece) {
                     if (chessGame.turn === "black" && item.piece.color !== "black") {
-                      return
+                      if (chessGame.gameMode !== "sandbox") {
+                        return
+                      }
                     }
                     if (chessGame.turn === "white" && item.piece.color !== "white") {
-                      return
+                      if (chessGame.gameMode !== "sandbox") {
+                        return
+                      }
                     }
                     gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
                     markedItems.forEach((markedFrameID) => {
@@ -133,7 +150,8 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                     setGameMap(gameMap);
                   }
                 }}
-                className={`relative flex justify-center items-center text-xl w-20 h-20 ${item.isSelected ? "bg-sky-600" :
+                className={`relative flex justify-center items-center text-xl w-10 md:w-20 h-10 md:h-20
+                  ${item.isSelected ? "bg-sky-600" :
                   item.isThreatened ? `bg-red-600` :
                   item.color === "black" && (item.isMarked || item.isMarkedForCastle) ? `${item.piece ? "bg-chess-black-blue-2 hover:bg-sky-500" : "hover:bg-chess-black-blue"} bg-chess-black` :
                     item.color === "white" && (item.isMarked || item.isMarkedForCastle) ? `${item.piece ? "bg-chess-white-blue-2 hover:bg-sky-500" : "hover:bg-chess-white-blue"} bg-chess-white` :
@@ -143,19 +161,19 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                 {
                   colPlaceForCoordinate(item, flipBoard) ?
                   <h1
-                  className={`absolute m-1 text-sm font-semibold select-none bottom-0 left-0 w-10 ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
+                  className={`absolute z-0 md:m-1 text-xs md:text-sm font-semibold select-none bottom-0 left-0 w-5 md:w-10 ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
                     {colPlaceForCoordinate(item, flipBoard)}
                   </h1> : null
                 }
                 {
                   rowPlaceForCoordinate(item, flipBoard) ?
                   <h1
-                  className={`absolute m-1 text-sm font-semibold select-none top-0 right-0 w-10 text-right ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
+                  className={`absolute z-0 md:m-1 text-xs md:text-sm font-semibold select-none top-0 right-0 w-5 md:w-10 text-right ${item.color === "black" ? "text-chess-white" : "text-chess-black"}`}>
                     {rowPlaceForCoordinate(item, flipBoard)}
                   </h1> : null
                 }
                 {item.piece ?
-                  <img className='select-none ' src={item.piece.image} alt="" width={70} /> : item.isMarked && hoveredItem !== item.positionName ?
+                  <img className='select-none z-10' src={item.piece.image} alt="" width={70} /> : item.isMarked && hoveredItem !== item.positionName ?
                     <TbPointFilled
                    size={55} className="text-cyan-500" />
                   : null
@@ -170,6 +188,13 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
       }} 
       className="bg-teal-600 px-5 rounded-2xl mt-2 font-bold text-white text-lg text-center block m-auto">
         Flip Board
+      </button>
+      <button
+      onClick={() => {
+        setAutoFlipBoard(!autoFlipBoard);
+      }} 
+      className="bg-teal-600 px-5 rounded-2xl mt-2 font-bold text-white text-lg text-center block m-auto">
+        {autoFlipBoard ? "Disable auto Flip Board" : "Enable auto Flip Board"}
       </button>
 
     </div>
