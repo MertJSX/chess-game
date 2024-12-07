@@ -24,16 +24,7 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
   const [hoveredItem, setHoveredItem] = React.useState<string | null>(null);
   const [flipBoard, setFlipBoard] = React.useState<boolean>(false);
   const [autoFlipBoard, setAutoFlipBoard] = React.useState<boolean>(false);
-  const [windowDimensions, setWindowDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
   const mapElements = useRef(null)
-
-  useEffect(() => {
-    console.log(windowDimensions);
-    
-  },[])
 
   useEffect(() => {
     if (flipBoard) {
@@ -121,6 +112,9 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
                         return
                       }
                     }
+                    if (gameMap.isKingInCheck() && chessGame.gameMode !== "sandbox") {
+                      return
+                    }
                     gameMap.mapFrames.get(selectedItem)?.SetSelected(false);
                     markedItems.forEach((markedFrameID) => {
                       gameMap.mapFrames.get(markedFrameID)?.SetIsMarked(false);
@@ -182,6 +176,15 @@ const GameMapComponent: React.FC<GameMapProps> = ({ gameMap, setGameMap, selecte
             ))
         }
       </div>
+      {chessGame.gameMode === "1v1" ?
+        <h1 className="text-center text-white text-2xl">
+          {chessGame.turn === "black" ? 
+          <span className='text-slate-500 font-bold'>BLACK</span> : 
+          <span className='text-slate-100 font-bold'>WHITE</span>} turn
+          </h1>
+        :
+        null
+      }
       <button
       onClick={() => {
         setFlipBoard(!flipBoard);

@@ -3,6 +3,18 @@ import MapFrame from "../classes/MapFrame";
 import { numberToLetter as NTL } from "../utils/numberToLetter";
 
 export function RookMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black", skipPosition?: string) {
+    let isKingInCheckWithoutThisPiecePosition: boolean = false;
+    if (!allyColor && !onlyIsAvailableToTake) {
+        if (mapFrame.piece?.color === "white") {
+            isKingInCheckWithoutThisPiecePosition = gameMap.isThreatenedPosition(gameMap.whiteKingLocation, "white", mapFrame.positionName);
+        }
+        if (mapFrame.piece?.color === "black") {
+            isKingInCheckWithoutThisPiecePosition = gameMap.isThreatenedPosition(gameMap.blackKingLocation, "black", mapFrame.positionName);
+        }
+        if (isKingInCheckWithoutThisPiecePosition) {
+            return [];
+        }
+    }
     let availableMoves: Array<string> = [];
     
     function checkPositions(colModifier: number, rowModifier: number) {
@@ -12,6 +24,11 @@ export function RookMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableT
         let isUnavailable = false;
         while (!isUnavailable) {
             currWorkPos = `${NTL(currWorkCol + colModifier)}${currWorkRow + rowModifier}`;
+
+            if (!gameMap.Contains(currWorkPos)) {
+                isUnavailable = true;
+                break;
+            }
             
             currWorkCol += colModifier;
             currWorkRow += rowModifier;

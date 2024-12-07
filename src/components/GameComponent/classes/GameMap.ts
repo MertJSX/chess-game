@@ -237,6 +237,22 @@ export class GameMap {
       this.mapFrames.get(this.blackKingLocation)?.SetIsThreatened(false);
     }
   }
+  public isKingInCheck() {
+    if (this.isThreatenedPosition(this.whiteKingLocation, "white")) {
+      return true;
+    }
+    if (this.isThreatenedPosition(this.blackKingLocation, "black")) {
+      return true;
+    }
+    return false;
+  }
+  public Contains(positionID: string) {
+    if (this.mapFrames.has(positionID)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   private initializePieces() {
     // Black
     this.mapFrames.get("a8")?.SetPiece(new Rook("black"), true);
