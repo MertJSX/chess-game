@@ -23,7 +23,7 @@ const Home = () => {
             to="/game"
             className="w-3/4 md:w-1/3 bg-teal-600 hover:bg-teal-700 rounded-full font-bold text-white px-4 text-center block m-auto text-lg mt-2 mb-2"
           >
-            Play with friend
+            Play with a Friend
           </Link>
         </div>
       </div>
