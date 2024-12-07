@@ -7,7 +7,7 @@ import "./global.css"
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/chess-game">
       <Routes>
         <Route path="/">
           <Route index element={<Home />} />
