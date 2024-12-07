@@ -1,4 +1,4 @@
-# Simple Chess game [Try DEMO](https://mertjsx.github.io/chess-game/)
+# Simple Chess game ([Try DEMO](https://mertjsx.github.io/chess-game/))
 
 A simple chess game with some mechanics still under development. The game is a web-based application and is responsive across all device screens.
 
