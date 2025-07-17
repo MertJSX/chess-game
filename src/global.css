@@ -3,11 +3,70 @@
 @import "tailwindcss/utilities";
 
 * {
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
 }
 
 body {
-    background-color: #2e2e2e;
+  background-color: #2e2e2e;
+}
+
+@keyframes land {
+  from {
+    transform: translateY(-10px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
+.frame {
+  img {
+    animation-name: land;
+    animation-duration: 0.2s;
+  }
+  &:hover {
+    img {
+      transform: translateY(2px);
+      cursor: pointer;
+    }
+  }
+}
+
+.selected-frame {
+  img {
+    transform: translateY(-10px) rotate(5deg);
+    cursor: pointer;
+  }
+  &:hover {
+    img {
+      transform: translateY(-10px) rotate(5deg);
+    }
+  }
+}
+
+@keyframes checked {
+  0%, 100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+}
+
+.checked-frame {
+  img {
+    animation-name: checked;
+    animation-duration: 1s;
+    animation-play-state: running;
+    animation-iteration-count: infinite;
+    transform-origin: center bottom;
+  }
 }
