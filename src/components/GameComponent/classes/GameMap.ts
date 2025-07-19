@@ -46,12 +46,14 @@ export class GameMap {
     }
     return false;
   }
-  public isAvailableToTake(positionID: string, color: string, doNotCountIsOccupied: boolean = false) {
+  public isAvailableToTake(
+    positionID: string,
+    color: string,
+    doNotCountIsOccupied: boolean = false
+  ) {
     if (this.mapFrames.has(positionID)) {
       if (doNotCountIsOccupied) {
-        if (
-          this.mapFrames.get(positionID)?.piece?.color !== color
-        ) {
+        if (this.mapFrames.get(positionID)?.piece?.color !== color) {
           return true;
         }
       } else {
@@ -122,45 +124,40 @@ export class GameMap {
       }
     }
   }
+  public canThisMoveFullyStopThreateningThisPosition() {}
   public isThreatenedPosition(
     positionID: string,
     allyColor: "black" | "white",
-    skipPosition?: string
+    skipPosition?: string,
+    hitPosition?: string,
+    onlyIfSkipPositionIsSkipped: boolean = false
   ) {
     let MapFrameOfPosition = this.mapFrames.get(positionID);
     let threateningPositions: string[] = [];
     if (MapFrameOfPosition) {
       let possibleBishops: string[];
       let possibleRooks: string[];
-      if (skipPosition) {
-        possibleBishops = BishopMoves(
-          this,
-          MapFrameOfPosition,
-          true,
-          allyColor,
-          skipPosition
-        );
-        possibleRooks = RookMoves(
-          this,
-          MapFrameOfPosition,
-          true,
-          allyColor,
-          skipPosition
-        );
-      } else {
-        possibleBishops = BishopMoves(
-          this,
-          MapFrameOfPosition,
-          true,
-          allyColor
-        );
-        possibleRooks = RookMoves(
-          this,
-          MapFrameOfPosition,
-          true,
-          allyColor
-        );
-      }
+      possibleBishops = BishopMoves(
+        this,
+        MapFrameOfPosition,
+        true,
+        allyColor,
+        skipPosition,
+        hitPosition,
+        true,
+        onlyIfSkipPositionIsSkipped ? true : false
+      );
+      possibleRooks = RookMoves(
+        this,
+        MapFrameOfPosition,
+        true,
+        allyColor,
+        skipPosition,
+        hitPosition,
+        true,
+        onlyIfSkipPositionIsSkipped ? true : false
+      );
+
       let possibleKnights: string[] = KnightMoves(
         this,
         MapFrameOfPosition,
