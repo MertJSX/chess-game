@@ -3,18 +3,7 @@ import MapFrame from "../classes/MapFrame";
 import { numberToLetter as NTL } from "../utils/numberToLetter";
 
 export function PawnMoves(gameMap: GameMap, mapFrame: MapFrame, onlyIsAvailableToTake: boolean = false, allyColor?: "white" | "black") {
-    let isKingInCheckWithoutThisPiecePosition: boolean = false;
-    if (!allyColor && !onlyIsAvailableToTake) {
-        if (mapFrame.piece?.color === "white") {
-            isKingInCheckWithoutThisPiecePosition = gameMap.isThreatenedPosition(gameMap.whiteKingLocation, "white", mapFrame.positionName);
-        }
-        if (mapFrame.piece?.color === "black") {
-            isKingInCheckWithoutThisPiecePosition = gameMap.isThreatenedPosition(gameMap.blackKingLocation, "black", mapFrame.positionName);
-        }
-        if (isKingInCheckWithoutThisPiecePosition) {
-            return [];
-        }
-    }
+
     let availableMoves: Array<string> = [];
     let whiteTakePossitionsForCheck = [
         `${NTL(mapFrame.position.col + 1)}${mapFrame.position.row + 1}`,
