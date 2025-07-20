@@ -38,8 +38,6 @@ export function BishopMoves(
       let pieceColor = allyColor ?? mapFrame.piece?.color;
 
       if (gameMap.isAvailableMove(currWorkPos)) {
-        console.log(`${currWorkPos} === ${hitPosition}`);
-
         if (!onlyIsAvailableToTake) {
           availableMoves.push(currWorkPos);
         } else if (currWorkPos === hitPosition) {

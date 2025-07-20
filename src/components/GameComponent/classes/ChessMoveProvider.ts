@@ -39,10 +39,6 @@ export class ChessMoveProvider {
       setMarkedPossibleCastles(possibleCastles);
     }
 
-    console.log(selectedFrame?.piece?.name);
-    console.log(selectedFrame?.positionName);
-    
-    
     if (selectedFrame?.piece?.name !== "King") {
         isKingInCheckWithoutThisPiecePosition = gameMap.isThreatenedPosition(
           pieceColor === "white"
@@ -99,8 +95,7 @@ export class ChessMoveProvider {
           return possibleMoves;
         }
         break;
-    }
-
+    }    
     if (gameMap.isKingInCheck()) {
       possibleMoves = possibleMoves.filter((move) => {
         return !gameMap.isThreatenedPosition(
