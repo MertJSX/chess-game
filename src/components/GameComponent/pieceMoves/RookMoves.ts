@@ -21,6 +21,8 @@ export function RookMoves(
     let currWorkCol = mapFrame.position.col;
     let currWorkRow = mapFrame.position.row;
     let isUnavailable = false;
+    let checkMoves: Array<string> = [];
+
     while (!isUnavailable) {
       currWorkPos = `${NTL(currWorkCol + colModifier)}${
         currWorkRow + rowModifier
@@ -35,11 +37,12 @@ export function RookMoves(
       currWorkRow += rowModifier;
 
       let pieceColor = allyColor ?? mapFrame.piece?.color;
+
       if (gameMap.isAvailableMove(currWorkPos)) {
         if (!onlyIsAvailableToTake) {
-          availableMoves.push(currWorkPos);
+          checkMoves.push(currWorkPos);
         } else if (currWorkPos === hitPosition) {
-          availableMoves.push(currWorkPos);
+          checkMoves.push(currWorkPos);
           isUnavailable = true;
         }
       } else if (pieceColor) {
@@ -50,7 +53,7 @@ export function RookMoves(
           }
         }
         if (gameMap.isAvailableToTake(currWorkPos, pieceColor)) {
-          availableMoves.push(currWorkPos);
+          checkMoves.push(currWorkPos);
           isUnavailable = true;
         } else {
           isUnavailable = true;
@@ -58,6 +61,12 @@ export function RookMoves(
       } else {
         isUnavailable = true;
       }
+    }
+
+    if (checkMoves.length > 0) {
+      availableMoves.push(...checkMoves)
+    } else {
+      isSkipPositionIsSkipped = false;
     }
   }
 
@@ -67,12 +76,8 @@ export function RookMoves(
   checkPositions(1, 0);
 
   if (isSkipPositionIsSkipped && returnOnlyIfSkipPositionIsSkipped) {
-    console.log(`${skipPosition} IS SKIPPED!`);
-    
     return availableMoves;
   } else if (returnOnlyIfSkipPositionIsSkipped) {
-    console.log(`${skipPosition} IS NOT SKIPPED!`);
-
     return [];
   }
 
