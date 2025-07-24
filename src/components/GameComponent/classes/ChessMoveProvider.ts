@@ -98,6 +98,15 @@ export class ChessMoveProvider {
     }    
     if (gameMap.isKingInCheck()) {
       possibleMoves = possibleMoves.filter((move) => {
+        let threatenerPositions: Array<string> = gameMap.getThreatenerPositions(
+          pieceColor === "white" ? gameMap.whiteKingLocation : gameMap.blackKingLocation,
+          pieceColor,
+          "",
+          move
+        )
+        if (threatenerPositions.length === 1 && threatenerPositions[0] === move) {
+          return true
+        }
         return !gameMap.isThreatenedPosition(
           pieceColor === "white"
             ? gameMap.whiteKingLocation
