@@ -124,7 +124,99 @@ export class GameMap {
       }
     }
   }
-  public canThisMoveFullyStopThreateningThisPosition() {}
+
+  public getThreatenerPositions(
+    positionID: string,
+    allyColor: "black" | "white",
+    skipPosition?: string,
+    hitPosition?: string,
+    onlyIfSkipPositionIsSkipped: boolean = false
+  ) {
+    let MapFrameOfPosition = this.mapFrames.get(positionID);
+    let threateningPositions: string[] = [];
+    if (MapFrameOfPosition) {
+      let possibleBishops: string[];
+      let possibleRooks: string[];
+      possibleBishops = BishopMoves(
+        this,
+        MapFrameOfPosition,
+        true,
+        allyColor,
+        skipPosition,
+        hitPosition,
+        true,
+        onlyIfSkipPositionIsSkipped ? true : false
+      );
+      possibleRooks = RookMoves(
+        this,
+        MapFrameOfPosition,
+        true,
+        allyColor,
+        skipPosition,
+        hitPosition,
+        true,
+        onlyIfSkipPositionIsSkipped ? true : false
+      );
+
+      let possibleKnights: string[] = KnightMoves(
+        this,
+        MapFrameOfPosition,
+        true,
+        allyColor
+      );
+      let possiblePawns: string[] = PawnMoves(
+        this,
+        MapFrameOfPosition,
+        true,
+        allyColor
+      );
+
+      possiblePawns.forEach((possiblePawnPosition) => {
+        let possiblePawnMapFrame = this.mapFrames.get(possiblePawnPosition);
+        if (possiblePawnMapFrame) {
+          if (
+            possiblePawnMapFrame.piece?.name === "Pawn" ||
+            possiblePawnMapFrame.piece?.name === "Queen"
+          ) {
+            threateningPositions.push(possiblePawnPosition);
+          }
+        }
+      });
+      possibleBishops.forEach((possibleBishopPosition) => {
+        let possibleBishopMapFrame = this.mapFrames.get(possibleBishopPosition);
+        if (possibleBishopMapFrame) {
+          if (
+            possibleBishopMapFrame.piece?.name === "Bishop" ||
+            possibleBishopMapFrame.piece?.name === "Queen"
+          ) {
+            threateningPositions.push(possibleBishopPosition);
+          }
+        }
+      });
+      possibleRooks.forEach((possibleRookPosition) => {
+        let possibleBishopMapFrame = this.mapFrames.get(possibleRookPosition);
+        if (possibleBishopMapFrame) {
+          if (
+            possibleBishopMapFrame.piece?.name === "Rook" ||
+            possibleBishopMapFrame.piece?.name === "Queen"
+          ) {
+            threateningPositions.push(possibleRookPosition);
+          }
+        }
+      });
+      possibleKnights.forEach((possibleKnightPosition) => {
+        let possibleBishopMapFrame = this.mapFrames.get(possibleKnightPosition);
+        if (possibleBishopMapFrame) {
+          if (possibleBishopMapFrame.piece?.name === "Knight") {
+            threateningPositions.push(possibleKnightPosition);
+          }
+        }
+      });
+    }
+
+    return threateningPositions;
+  }
+
   public isThreatenedPosition(
     positionID: string,
     allyColor: "black" | "white",
