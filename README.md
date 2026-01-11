@@ -2,6 +2,8 @@
 
 A simple chess game with some mechanics still under development. The game is a web-based application and is responsive across all device screens.
 
+<img width="446" height="464" alt="image" src="https://github.com/user-attachments/assets/bb177adb-9eec-4f3a-9114-0a85b92fd23d" />
+
 ## Game modes
 - Sandbox (without turn-based gameplay)
 - Play with a Friend (same-screen multiplayer)
