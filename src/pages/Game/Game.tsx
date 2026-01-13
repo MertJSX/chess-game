@@ -8,7 +8,7 @@ const Game = () => {
         CHESS GAME
       </h1>
       <h1 className="text-center text-teal-200 text-xl m-2 italic select-none mt-0">
-        By MertJS
+        By MertJSX
       </h1>
       <GameComponent />
     </div>
